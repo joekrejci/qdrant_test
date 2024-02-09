@@ -1,0 +1,21 @@
+Common Questions Qdrant
+
+1. I noticed a decent amount of users have questions about memory allocation/usage/monitoring/etc. I did see a section regarding usage metrics reported by htop or top being off due to the design of qdrant however I didn't see a recommended way to monitor the memory usage properly. I also saw a question regarding this in the Discord server as quoted here: "Your Qdrant Cloud interface should show the current memory usage in a chart."
+
+
+So that makes me think it might be beneficial to do a quick write up FAQ on how to write a quick memory usage query for Prometheus. Adding to this section:https://qdrant.tech/documentation/faq/database-optimization/#i-configured-on-disk-vector-storage-but-memory-usage-is-still-high-why
+
+"I configured on-disk vector storage, but memory usage is still high. Why?"
+
+Firstly, memory usage metrics as reported by top or htop may be misleading. They are not showing the minimal amount of memory required to run the service. If the RSS memory usage is 10 GB, it doesn’t mean that it won’t work on a machine with 8 GB of RAM. If you would like more insight to how much memory the Qdrant process is using we recommend configuring a Prometheus check like the example shown below. More in depth examples can be found here. (link to Prometheus Querying Docs)
+
+
+
+2. I saw multiple questions just scrolling through asking about Rate Limits on requests and saw this answer show up once or twice. Probably worth adding into the Cloud FAQ. 
+
+andrey.vasnetsov — 01/24/2024 3:46 AM
+Also, qdrant cloud doesn't rate limit your requests, as you pay for allocated resources
+
+Is there a rate limit for requests?
+
+Qdrant Cloud doesn't rate limit your requests, however your requests may not run at the optimal speed depending on your instance. Reach out to us via email or Discord and we'll be happy to consult with you on a proper solution for your needs. 

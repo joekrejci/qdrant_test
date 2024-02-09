@@ -1,0 +1,36 @@
+Qdrant Discord Interesting Problem
+
+Link to Discord Message: https://discord.com/channels/907569970500743200/1198343697868259338/1198343697868259338
+
+Customer wanted to implement a healthcheck into the docker compose file but the image does not contain curl. Their original proposal in the docker compose file:
+
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://qdrant-database:6333/healthz"]
+
+
+1. Could be solved by just adding curl to the base container, but whats the fun in that... :) 
+
+2. I found someone via a Github Issue with a similar problem who came up with an interesting solution.
+
+
+#!/bin/bash
+
+exec 3<>/dev/tcp/localhost/"$1"
+
+echo -e "GET https://joey-test-instance.us-east4-0.gcp.cloud.qdrant.io:6333/healthz HTTP/1.1
+host: localhost:$1
+" >&3
+
+timeout 1 cat <&3 | grep healthz | grep passed || exit 1
+
+Basically what this does is redirect File Descriptor 3 to the specified port.
+
+Could be ran like this: 
+
+    healthcheck:
+      test: [ 'CMD-SHELL', '/bin/bash -c "/path/to/healthcheck.sh 8081"' ]
+      ...
+
+I didn't have the time to fully test this implementation, but I think this could theoretically work with some testing and tweaks. 
+
+Source: https://ceh51.blogspot.com/2016/07/how-to-open-tcpudp-sockets-bash-shell.html
