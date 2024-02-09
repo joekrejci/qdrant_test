@@ -28,3 +28,15 @@ Example Return Truncated:
         "state": "Active"
       },
 
+
+Output of Python Script:
+
+(.venv) ➜  qdrant git:(main) ✗ python3 shard_check.py                             
++----------+--------------+--------+
+| shard_id | points_count | state  |
++----------+--------------+--------+
+|    0     |      0       | Active |
+|    1     |      0       | Active |
+|    2     |      0       | Active |
+|    3     |      0       | Active |
++----------+--------------+--------+
